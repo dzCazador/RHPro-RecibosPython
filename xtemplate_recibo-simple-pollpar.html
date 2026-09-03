@@ -1,0 +1,439 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<style>
+/* -------------------------------------- */
+/* ESTILOS DE TEXTO Y DATOS (stydat)      */
+/* -------------------------------------- */
+.stytit00
+{
+	background-color: #FFFFFF;
+	COLOR: #000000;
+	FONT-FAMILY: "Arial";
+	FONT-SIZE: 10pt;
+	FONT-WEIGHT: bold;
+	text-align: right;
+}
+.stydat01-l
+{
+	COLOR: #000000;
+	FONT-FAMILY: "Arial";
+	FONT-SIZE: 8pt;
+	FONT-WEIGHT: normal;
+    text-align: left;	
+	padding-left: 10px; 	
+}
+.stydat01-c
+{
+	COLOR: #000000;
+	FONT-FAMILY: "Arial";
+	FONT-SIZE: 8pt;
+	FONT-WEIGHT: normal;
+    text-align: center;	
+}
+.stydat01-r
+{
+	COLOR: #000000;
+	FONT-FAMILY: "Arial";
+	FONT-SIZE: 8pt;
+	FONT-WEIGHT: normal;
+    text-align: right;	
+	padding-right: 10px;	
+}
+.stydat01-l-ll
+{
+	COLOR: #000000;
+	FONT-FAMILY: "Arial";
+	FONT-SIZE: 8pt;
+	FONT-WEIGHT: normal;
+    text-align: left;	
+	padding-left: 10px; 	
+    border-left-style: solid;
+	border-left-width: 1px;
+	border-left-color: Black;	
+}
+.stydat01-c-ll
+{
+	COLOR: #000000;
+	FONT-FAMILY: "Arial";
+	FONT-SIZE: 8pt;
+	FONT-WEIGHT: normal;
+    text-align: center;	
+    border-left-style: solid;
+	border-left-width: 1px;
+	border-left-color: Black;	
+}
+.stydat01-r-ll
+{
+	COLOR: #000000;
+	FONT-FAMILY: "Arial";
+	FONT-SIZE: 8pt;
+	FONT-WEIGHT: normal;
+    text-align: right;	
+	padding-right: 10px;	
+    border-left-style: solid;
+	border-left-width: 1px;
+	border-left-color: Black;	
+}
+.stytit01-l
+{
+	background-color: #333399;
+	COLOR: #ffffff;
+	FONT-FAMILY: "Arial";
+	FONT-SIZE: 8pt;
+	FONT-WEIGHT: bold;
+	text-align: left;
+}
+.stytit01-c
+{
+	background-color: #333399;
+	COLOR: #ffffff;
+	FONT-FAMILY: "Arial";
+	FONT-SIZE: 8pt;
+	FONT-WEIGHT: bold;
+	text-align: center;
+}
+.stydat02-l
+{
+	COLOR: #000000;
+	FONT-FAMILY: "Arial";
+	FONT-SIZE: 7pt;
+	FONT-WEIGHT: normal;
+    text-align: left;	
+}
+.stydat02-c
+{
+	COLOR: #000000;
+	FONT-FAMILY: "Arial";
+	FONT-SIZE: 7pt;
+	FONT-WEIGHT: normal;
+    text-align: center;	
+}
+.stytit02-l
+{
+	background-color: #333399;
+	COLOR: #ffffff;
+	FONT-FAMILY: "Arial";
+	FONT-SIZE: 7pt;
+	FONT-WEIGHT: bold;
+	text-align: left;
+}
+.stytit02-c
+{
+	background-color: #333399;
+	COLOR: #ffffff;
+	FONT-FAMILY: "Arial";
+	FONT-SIZE: 7pt;
+	FONT-WEIGHT: bold;
+	text-align: center;
+}
+.recibo-content {
+    /* Clave para evitar el corte a media columna */
+    page-break-inside: avoid;
+}
+</style>
+
+
+<head>
+	<title>Recibo de sueldo - {{ r.cabecera.terape_nombre }}</title>
+</head>
+
+<body>
+
+
+<table class="rotator" style="border-color:white ; border-width: 2 ; border-style:solid" width="100%">
+
+<tr>
+
+    <td width="100%" style="border-color:black; border-width: 2px; border-style:solid; vertical-align: top;" class="recibo-content">
+        
+        <table width="100%">
+        <tr>
+         <td align="right" class="stytit00">
+           <b>Recibo de Haberes</b> 
+         </td>
+        </tr>
+        </table>
+
+        <table width="100%">
+        <tr>
+          <td style="width:200px">
+            <table>
+        	  <tr>
+        	    <td align="left">
+          		 <img src="http://serverrhpro/rhprox2/fotos/Logo Pollpar S A.JPG" height="60" width="225">
+        		</td>
+        	  </tr>	
+        	</table>    
+          </td>
+          <td>
+               <table border="0" cellpadding="1"  cellspacing="1" style="width:290px;border-color:gray ; border-width: 1 ; border-style:solid" align="right">
+        		<tr>
+        		  <td colspan="2" class="stytit01-c" align="right">
+        		  Apellido y Nombres
+        		  </td>
+        		</tr>
+        		<tr>
+        		  <td colspan="2" class="stydat01-l" align="right">
+        		  {{ r.cabecera.terape_nombre | default('N/A') }} 
+        		  </td>
+        		</tr>
+        		<tr>
+        		  <td class="stytit01-c" align="right">
+        		  Direcci&oacute;n
+        		  </td>
+        		  <td class="stytit01-c" align="right">
+        		  Legajo
+        		  </td>
+        		</tr>
+        		<tr>
+        		  <td class="stydat01-l" align="right">
+        		  {{ r.cabecera.terdom | default('Dirección N/A') }}
+        		  </td>
+        		  <td class="stydat01-c" align="right">
+        		  {{ r.cabecera.legajo | default('N/A') }}
+        		  </td>
+        		</tr>
+        	</table>  
+          </td>
+        </tr>
+        </table> 
+
+        <table width="100%">
+        <tr>
+          <td class="stydat02-l" style="width:40%;" align="right">
+         	  {{ r.cabecera.empnombre | default('POLLPAR SA') }}<br>
+        	  {{ r.cabecera.empdire | default('3 DE FEBRERO ., M.R. ALONSO') }}<br>
+        	  N° Patronal MTESS {{ r.cabecera.empcuit | default('N/A') }}
+          </td>  
+          <td>
+        	<table width="100%" border="0" cellpadding="1"  cellspacing="1" align="right" style="width:60px;height:42px;border-color:gray ; border-width: 1 ; border-style:solid">
+        	<tr>
+        	<td width="20%" class="stytit01-c" align="right">
+        	   M/A Liq.
+        	</td>  
+        	</tr>  
+        	<tr>
+        	 <td width="30%" class="stydat01-c" align="right">
+        	   {{ r.cabecera.pliqmes | default('MM') }}&nbsp;&nbsp;{{ r.cabecera.pliqanio | default('AAAA') }}
+        	 </td>  
+        	</tr>  
+        	</table>
+          </td>
+          <td width="60%">
+        	<table border="0" cellpadding="1"  cellspacing="1" align="right" style="height:42px;width:290px;border-color:gray ; border-width: 1 ; border-style:solid">
+        	<tr>
+        	 <td class="stytit01-c" align="right">
+        	   Periodo
+        	 </td>  
+        	 <td class="stytit01-c" align="right">
+        	   Fecha Ing.
+        	 </td>  
+        	 <td class="stytit01-c" align="right">
+        	   Sueldo Basico
+        	 </td>  	 
+        	</tr>  
+        	<tr>
+        	 <td class="stydat01-c" align="right">
+        	   {{ r.cabecera.periodo_desde | default('DD/MM/AAAA') }} al {{ r.cabecera.periodo_hasta | default('DD/MM/AAAA') }}
+        	 </td>  
+        	 <td class="stydat01-c" align="right">
+        	   {{ r.cabecera.terfecing | default('DD/MM/AAAA') }}
+        	 </td>  
+        	 <td class="stydat01-c" align="right">
+        	   {{ r.cabecera.sueldo_base_fmt | default('0.000.000,00') }} 
+        	 </td>  	 
+        	</tr>  	
+        	</table>
+          </td>
+        </tr>
+        </table>
+
+        <table width="100%">
+        <tr>
+          <td align="right">
+        	<table border="0" cellpadding="1"  cellspacing="1" align="left" style="height:42px;width:100%;border-color:gray ; border-width: 1 ; border-style:solid">
+        		<tr>
+        			 <td class="stytit01-c" align="left" width="254px">Gerencia</td>  
+        			 <td class="stytit01-c" align="left" width="254px">Sector</td>  	 
+        		</tr>  
+        		<tr>
+        			 <td nowrap="nowrap" class="stydat01-c"><span style="overflow:hidden; width:254px"> {{ r.cabecera.gerencia | default('N/A') }}</span> &nbsp;</td>  
+        			 <td nowrap="nowrap" class="stydat01-c"><span style="overflow:hidden; width:254px">{{ r.cabecera.sector | default('N/A') }}</span>&nbsp;</td>  	 
+        		</tr>  	
+        	</table>
+          </td>	
+        </tr>
+        </table>
+
+        <table width="100%">
+        <tr>
+        <td align="right" width="100%">
+        	<table border="0" cellpadding="1"  cellspacing="1" align="left" style="height:42px;width:100%;border-color:gray ; border-width: 1 ; border-style:solid">
+        		<tr>
+        			 <td class="stytit01-c" width="255px">Puesto</td>  
+        			 <td class="stytit01-c" width="255px">Sucursal</td>  
+        		</tr>  
+        		<tr>
+        			 <td nowrap="nowrap" class="stydat01-c"><span style="overflow:hidden; width:255px">{{ r.cabecera.puesto | default('N/A') }}</span>&nbsp;</td>  
+        			 <td nowrap="nowrap" class="stydat01-c"><span style="overflow:hidden; width:255px">{{ r.cabecera.sucursal | default('N/A') }}</span>&nbsp;</td>  
+        		</tr>  	
+        	</table>
+          </td>
+        </tr>
+        </table>
+
+        <table width="100%" border=1>
+        <tr>
+          <td width="100%">
+        	<table width="100%" border="0" cellpadding="0"  cellspacing="0" style="border-color:gray ; border-width: 1 ; border-style:solid">
+        	<tr>
+        	 <td class="stytit01-c" width="8%">Cod.</td>
+        	 <td class="stytit01-c" width="20%">Concepto</td>
+        	 <td class="stytit01-c" width="10%">Unidades</td>
+        	 <td class="stytit01-c" width="10%">Haberes</td>
+        	 <td class="stytit01-c" width="10%">Descuentos</td>
+            </tr>
+        	
+            {% for detalle in r.detalles %}
+        		<tr>
+        		 <td class="stydat01-c" width="8%" >
+        		   {{ detalle.concnro | default('&nbsp;') }}
+        		 </td>
+        		 <td class="stydat01-l-ll" width="20%">
+        		   {{ detalle.descri | default('&nbsp;') }}
+        		 </td>
+        		 <td class="stydat01-r-ll" width="10%">
+        		   {{ '%.2f' | format(detalle.cantid) | default('&nbsp;') }}
+        		 </td>
+        	     
+                {% if detalle.haber > 0 %}
+        		 <td class="stydat01-r-ll" width="10%">
+        		   {{ '%.2f' | format(detalle.haber) | default('&nbsp;') }} 
+        		 </td>
+        		 <td class="stydat01-c-ll" width="10%">&nbsp;
+        		 </td>
+                {% elif detalle.debe > 0 %}
+        		 <td class="stydat01-c-ll" width="10%">&nbsp;
+        		 </td>
+        		 <td class="stydat01-r-ll" width="10%">
+        	        {{ '%.2f' | format(detalle.debe) | default('&nbsp;') }} 		
+        		 </td>	
+                {% else %}
+                 <td class="stydat01-c-ll" width="10%">&nbsp;</td>
+                 <td class="stydat01-c-ll" width="10%">&nbsp;</td>
+                {% endif %}
+        	    </tr>
+            {% endfor %}
+        	
+            {# Rellenar con filas vacías para mantener la estructura visual (50 filas totales) #}
+            {% for _ in range(50 - r.detalles|length) %}
+        		<tr>
+        		 <td class="stydat01-c"><br></td>
+        		 <td class="stydat01-l-ll"><br></td>
+        		 <td class="stydat01-c-ll"><br></td>
+        		 <td class="stydat01-c-ll"><br></td>
+        		 <td class="stydat01-c-ll"><br></td>
+        	    </tr>
+            {% endfor %}
+        	
+        	<tr>
+        	 <td class="stytit01-c" colspan="3">
+               Lugar y Fecha de Pago
+        	 </td>
+        	 <td class="stytit01-c">
+        	   Total Haberes
+        	 </td>
+        	 <td class="stytit01-c">
+               Total Descuentos
+        	 </td>
+            </tr>
+        	<tr>
+        	 <td class="stydat01-c" colspan="3">
+        	   {{ r.cabecera.empdire | default('N/A') }}&nbsp;&nbsp;{{ r.cabecera.fecha_pago | default('DD/MM/AAAA') }}
+        	 </td>
+        	 <td class="stydat01-r">
+        	   {{ r.totales.total_haberes | default('0.00') }}
+        	 </td>
+        	 <td class="stydat01-r">
+        	   {{ r.totales.total_descuentos | default('0.00') }}
+        	 </td>
+            </tr>	
+        	<tr>
+        	 <td class="stytit01-c" colspan="3">
+               Forma de Pago
+        	 </td>
+        	 <td class="stytit01-c">
+        	   Neto a Cobrar
+        	 </td>
+        	 <td>
+        	 </td>
+            </tr>
+        	<tr>
+        	 <td class="stydat01-c" colspan="3">
+        	   {{ r.cabecera.formapago | default('&nbsp;') }}
+        	 </td>
+        	 <td class="stydat01-r">
+        	   {{ r.totales.neto_pagado | default('0.00') }}
+        	 </td>
+        	 <td>
+        	 </td>
+            </tr>	
+        	</table>
+          </td>	
+        </tr>	
+        </table>	
+
+        <table width="100%">
+          <td valign="top" class="stydat01-l" style="width:320px">
+        	
+        	   <b></b> Son {{ r.totales.neto_letras | default('CANTIDAD EN LETRAS') }} Guaraníes<br>
+        	   
+        	<br>
+        	Recib&iacute; la cantidad de guaraníes indicada en conformidad por el pago de mi remuneraci&oacute;n y copia de este recibo.<br><br>
+            <div style="text-align: left; font-family: C39HrP24DhTt; font-size: 36pt; font-style: normal; vertical-align: bottom;padding-bottom: 3mm;">
+        		*{{ r.cabecera.codigo_barra | default('N/A') }}*
+          	</div>
+          </td>  
+          <td valign="top" class="stydat02-c">
+            
+        	        <div style="height:0px;width:0px;">
+        			   <br>&nbsp;
+        			   <br>&nbsp;
+        			   <br>&nbsp;
+        		    </div>
+        		   	
+        	<hr width="100" style="heigth:3px">
+        	Firma   	
+          </td>
+
+        </tr>
+        </table>
+
+        <table width="100%">
+        <tr>
+          <td class="stydat01-l" align="left">
+            Recibo N&deg;&nbsp;{{ r.cabecera.recibo_nro | default('N/A') }}
+          </td>
+          <td><hr width="60%" style="heigth:3px" align="center"></td>
+          <td>&nbsp;</td>
+        </tr>
+
+        <tr>
+        	 <td  class="stydat01-l" align="left" style="width:220px">&nbsp;</td>
+         	 <td  class="stydat01-l" align="left" style="width:220px">&nbsp;</td>
+        	 
+        	  <td class="stydat01-c" align="center">
+        		<b>{{ copia_tipo }}</b>
+        	  </td>
+        </tr>
+        </table>
+        
+        </td>
+    
+
+</tr>
+</table>
+
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# Cache y archivos temporales de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Configuracion local con credenciales
+config.ini
+
+# PyInstaller
+build/
+dist/
+*.spec.bak
+
+# Archivos generados por la aplicacion
+*.pdf
+*.zip
+*.html
+!1.html
+!template_*.html
+!xtemplate_*.html
+
+# Carpetas de periodos generadas
+[0-9]*/
+
+# Logs y temporales
+*.log
+*.tmp
+*.bak
+
+# IDE y sistema operativo
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

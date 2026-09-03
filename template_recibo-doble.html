@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Recibo de Sueldo y Costo Laboral</title>
+    <style>
+        @page { size: A4 landscape; margin: 2mm; }
+        body { margin: 0; padding: 0; color: #000; background: #fff; font-family: Arial, Helvetica, sans-serif; font-size: 7pt; }
+        .hoja { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        .recibo-col { width: 49%; vertical-align: top; padding: 0; }
+        .separador { width: 2%; }
+        .recibo { width: 100%; border: 1px solid #777; border-collapse: collapse; table-layout: fixed; }
+        .recibo td, .recibo th { border: 1px solid #777; padding: 0 2px; font-size: 7pt; white-space: nowrap; }
+        .sin-bordes { width: 100%; border: 1px solid #777; border-collapse: collapse; table-layout: fixed; }
+        .sin-bordes td, .sin-bordes th { border-left: 1px solid #777; border-right: 1px solid #777; border-top: 0; border-bottom: 0; padding: 0 2px; font-size: 7pt; white-space: nowrap; }
+        .sin-bordes .seccion td, .sin-bordes .encabezado td, .sin-bordes .encabezado th { border-top: 1px solid #777; border-bottom: 1px solid #777; }
+        .encabezado { background: #e6e6e6; font-weight: bold; text-align: center; }
+        .seccion { background: #d0d0d0; font-weight: bold; }
+        .izq { text-align: left; }
+        .centro { text-align: center; }
+        .der { text-align: right; }
+        .firma { height: 45px; vertical-align: bottom; text-align: center; }
+        .firma hr { width: 150px; margin: 0 auto; }
+        .composicion { width: 100%; border: 1px solid #777; border-collapse: collapse; table-layout: fixed; }
+        .composicion td { padding: 0 3px; border: 0; font-size: 6pt; }
+        .composicion-detalle { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        .composicion-detalle td { border: 0; padding: 0 2px; font-size: 6pt; }
+        .lista-costo { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        .lista-costo td { border: 0; padding: 0 2px; }
+        .leyenda-torta { width: 100%; border-collapse: collapse; table-layout: fixed; margin-top: 2px; }
+        .leyenda-torta td { border: 0; padding: 0 2px; font-size: 5.5pt; white-space: nowrap; }
+        .muestra-gris { display: inline-block; width: 6px; height: 6px; border: 1px solid #333; vertical-align: middle; }
+    </style>
+</head>
+<body>
+{% macro valor(obj, nombre, defecto='') -%}
+    {{ obj[nombre] | default(defecto, true) }}
+{%- endmacro %}
+
+{% macro recibo(etiqueta) -%}
+<table class="recibo">
+    <tr>
+        <td colspan="5" style="border: 0;">
+            <b style="font-size: 6.5pt;">{{ valor(r.cabecera, 'empnombre', 'MARIO CERVI E HIJOS SACIAFI') }}</b><br>
+            {{ valor(r.cabecera, 'empdire', 'Aguado 2700 - Neuquen Capital') }}<br>
+            <b>C.U.I.T. EMPRESA: {{ valor(r.cabecera, 'empcuit', '') }}</b>
+        </td>
+    </tr>
+    <tr class="encabezado">
+        <td>PER&Iacute;ODO</td><td colspan="2">APELLIDO Y NOMBRE</td><td>N&deg; LEGAJO</td><td>SUELDO BRUTO</td>
+    </tr>
+    <tr>
+        <td class="centro">{{ valor(r.cabecera, 'mes_liquidacion', valor(r.cabecera, 'bpronro', '')) }}</td>
+        <td colspan="2" class="izq"><b>{{ valor(r.cabecera, 'terape_nombre', valor(r.cabecera, 'terape', 'N/A')) }}</b></td>
+        <td class="centro"><b>{{ valor(r.cabecera, 'legajo', valor(r.cabecera, 'ternro', '')) }}</b></td>
+        <td class="der">{{ valor(r.totales, 'total_haberes', valor(r.cabecera, 'sueldo_base_fmt', '0.00')) }}</td>
+    </tr>
+    <tr class="encabezado">
+        <td>CENTRO DE COSTO</td><td>FECHA INGRESO</td><td>CATEGOR&Iacute;A</td><td>C.U.I.L.</td><td>PAGO APORTES</td>
+    </tr>
+    <tr>
+        <td class="centro">{{ valor(r.cabecera, 'centrocosto', valor(r.cabecera, 'centro_costo', '')) }}</td>
+        <td class="centro">{{ valor(r.cabecera, 'terfecing', 'DD/MM/AAAA') }}</td>
+        <td class="centro">{{ valor(r.cabecera, 'categoria', 'N/A') }}</td>
+        <td class="centro">{{ valor(r.cabecera, 'tercuil', valor(r.cabecera, 'cuil', '')) }}</td>
+        <td class="centro">{{ valor(r.cabecera, 'fecha_pago', 'DD/MM/AAAA') }}</td>
+    </tr>
+</table>
+
+<table class="sin-bordes">
+    <tr class="seccion"><td colspan="6" class="centro">COSTO TOTAL EMPLEADOR</td><td class="der">{{ valor(r, 'costo_total_empleador', '') }}</td></tr>
+    {% if r.costos_empleador is defined %}
+    <tr>
+        <td colspan="3" style="padding: 0;">
+            <table class="lista-costo">
+                <tr class="encabezado"><td width="60%">CONCEPTO</td><td width="12%">UNI.</td><td width="28%">MONTO</td></tr>
+                {% for costo in r.costos_empleador[:((r.costos_empleador | length + 1) // 2)] %}
+                <tr{% if costo.es_total %} style="font-weight: bold;"{% endif %}><td>{{ valor(costo, 'concepto', valor(costo, 'descri', '')) }}</td><td class="centro">{{ valor(costo, 'unidad', valor(costo, 'cantid', '')) }}</td><td class="der">{{ valor(costo, 'monto', '') }}</td></tr>
+                {% endfor %}
+            </table>
+        </td>
+        <td colspan="4" style="padding: 0;">
+            <table class="lista-costo">
+                <tr class="encabezado"><td width="60%">CONCEPTO</td><td width="12%">UNI.</td><td width="28%">MONTO</td></tr>
+                {% for costo in r.costos_empleador[((r.costos_empleador | length + 1) // 2):] %}
+                <tr{% if costo.es_total %} style="font-weight: bold;"{% endif %}><td>{{ valor(costo, 'concepto', valor(costo, 'descri', '')) }}</td><td class="centro">{{ valor(costo, 'unidad', valor(costo, 'cantid', '')) }}</td><td class="der">{{ valor(costo, 'monto', '') }}</td></tr>
+                {% endfor %}
+            </table>
+        </td>
+    </tr>
+    {% endif %}
+</table>
+
+<table class="sin-bordes">
+    <tr class="seccion"><td colspan="3" class="centro">SUELDO BRUTO</td><td class="der">{{ valor(r.totales, 'total_haberes', valor(r.cabecera, 'sueldo_base_fmt', '0.00')) }}</td></tr>
+    <tr class="encabezado">
+        <td width="40%">CONCEPTO</td><td width="15%">UNIDAD</td><td width="20%">V.UNITARIO</td><td width="25%">MONTO</td>
+    </tr>
+    {% for detalle in r.detalles %}
+    <tr>
+        <td class="izq">{{ detalle.descri }}</td><td class="centro">{{ detalle.cantid | default('') }}</td><td class="der">{{ detalle.v_unit_num | default('') }}</td>
+        {% if detalle.tipo_monto in ['DESCUENTO', 'OTROS_DESC'] %}<td class="der">{{ detalle.debe | default('') }}</td>
+        {% else %}<td class="der">{{ detalle.haber | default('') }}</td>{% endif %}
+    </tr>
+    {% endfor %}
+    {% for fila in range([15 - (r.detalles | length), 0] | max) %}<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>{% endfor %}
+    <tr class="encabezado"><td colspan="3" class="izq">Totales</td><td class="der">{{ valor(r.totales, 'total_haberes', '0.00') }}</td></tr>
+</table>
+
+<table class="composicion">
+    <tr><td colspan="2" style="text-align: center; font-weight: bold; text-decoration: underline;">Detalle de la composici&oacute;n salarial</td></tr>
+    <tr>
+        <td width="66%" valign="top" style="border-right: 1px solid #777;">
+            <table class="composicion-detalle">
+                {% for fila in range(3) %}
+                {% set izquierdo = r.composicion_salarial[fila * 2] if r.composicion_salarial | length > fila * 2 else {} %}
+                {% set derecho = r.composicion_salarial[fila * 2 + 1] if r.composicion_salarial | length > fila * 2 + 1 else {} %}
+                <tr><td width="30%"><b>{{ izquierdo.titulo }}</b></td><td width="20%" class="der"><b>$ {{ '{:,.2f}'.format(izquierdo.total | default(0)) }}</b></td><td width="30%"><b>{{ derecho.titulo }}</b></td><td width="20%" class="der"><b>$ {{ '{:,.2f}'.format(derecho.total | default(0)) }}</b></td></tr>
+                <tr><td>Empleador</td><td class="der">$ {{ '{:,.2f}'.format(izquierdo.empleador | default(0)) }}</td><td>Empleador</td><td class="der">$ {{ '{:,.2f}'.format(derecho.empleador | default(0)) }}</td></tr>
+                <tr><td>Trabajador</td><td class="der">$ {{ '{:,.2f}'.format(izquierdo.trabajador | default(0)) }}</td><td>Trabajador</td><td class="der">$ {{ '{:,.2f}'.format(derecho.trabajador | default(0)) }}</td></tr>
+                {% endfor %}
+                <tr><td colspan="4" style="color: #444;">* Nota: Seg. social empleador incluye SIPA, FNE y Asig. Fam.</td></tr>
+            </table>
+        </td>
+        <td width="34%" valign="middle" style="text-align: center;">
+            <b>Costo total empleador</b>
+            <svg width="170" height="100" viewBox="0 0 170 100" xmlns="http://www.w3.org/2000/svg">
+                {% for segmento in r.grafico_torta | default([]) %}<path d="{{ segmento.path }}" fill="{{ segmento.color }}" stroke="#333" stroke-width="0.35" />{% endfor %}
+            </svg>
+            <table class="leyenda-torta">
+                <tr>{% for segmento in r.grafico_torta | default([]) %}<td><span class="muestra-gris" style="background: {{ segmento.color }};"></span> {{ segmento.nombre }} {{ segmento.porcentaje }}%</td>{% endfor %}</tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<table class="recibo" style="margin-top: 2px;"><tr><td class="firma" width="60%"><hr>{{ valor(r.cabecera, 'terape_nombre', valor(r.cabecera, 'terape', 'APELLIDO, NOMBRE')) }}</td><td class="centro" valign="bottom"><b>{{ etiqueta }}</b></td></tr></table>
+{%- endmacro %}
+
+<table class="hoja"><tr><td class="recibo-col">{{ recibo('Original') }}</td><td class="separador">&nbsp;</td><td class="recibo-col">{{ recibo('Duplicado') }}</td></tr></table>
+</body>
+</html>
