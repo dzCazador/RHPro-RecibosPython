@@ -104,7 +104,14 @@
     </tr>
     {% endfor %}
     {% for fila in range([15 - (r.detalles | length), 0] | max) %}<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>{% endfor %}
-    <tr class="encabezado"><td colspan="3" class="izq">Totales</td><td class="der">{{ valor(r.totales, 'total_haberes', '0.00') }}</td></tr>
+    <tr class="encabezado">
+        <td colspan="4" class="der" style="font-size: 6.5pt;">
+            Remun.: <b>$ {{ valor(r.totales, 'total_remunerativo', '0.00') }}</b> |
+            No Remun.: <b>$ {{ valor(r.totales, 'total_no_remunerativo', '0.00') }}</b> |
+            Desc.: <b>$ {{ valor(r.totales, 'total_descuentos', '0.00') }}</b> |
+            NETO <b>$ {{ valor(r.totales, 'neto_pagado', '0.00') }}</b>
+        </td>
+    </tr>
 </table>
 
 <table class="composicion">
