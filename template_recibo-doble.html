@@ -21,6 +21,7 @@
         .der { text-align: right; }
         .firma { height: 45px; vertical-align: bottom; text-align: center; }
         .firma hr { width: 150px; margin: 0 auto; }
+        .firma img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; margin: 0 auto; object-fit: contain; }
         .composicion { width: 100%; border: 1px solid #777; border-collapse: collapse; table-layout: fixed; }
         .composicion td { padding: 0 3px; border: 0; font-size: 6pt; }
         .composicion-detalle { width: 100%; border-collapse: collapse; table-layout: fixed; }
@@ -37,7 +38,7 @@
     {{ obj[nombre] | default(defecto, true) }}
 {%- endmacro %}
 
-{% macro recibo(etiqueta) -%}
+{% macro recibo(etiqueta, mostrar_firma=false) -%}
 <table class="recibo">
     <tr>
         <td colspan="5" style="border: 0;">
@@ -141,9 +142,15 @@
     </tr>
 </table>
 
-<table class="recibo" style="margin-top: 2px;"><tr><td class="firma" width="60%"><hr>{{ valor(r.cabecera, 'terape_nombre', valor(r.cabecera, 'terape', 'APELLIDO, NOMBRE')) }}</td><td class="centro" valign="bottom"><b>{{ etiqueta }}</b></td></tr></table>
+<table class="recibo" style="margin-top: 2px;"><tr><td class="firma" width="60%" style="height: {{ valor(r.cabecera, 'empfirmaalto', 45) }}px;">
+    {% if mostrar_firma and valor(r.cabecera, 'empfirma', '') %}
+        <img src="{{ valor(r.cabecera, 'empfirma', '') }}" width="{{ valor(r.cabecera, 'empfirmaancho', '') }}" height="{{ valor(r.cabecera, 'empfirmaalto', '') }}" alt="Firma">
+    {% else %}
+        <hr>{{ valor(r.cabecera, 'terape_nombre', valor(r.cabecera, 'terape', 'APELLIDO, NOMBRE')) }}
+    {% endif %}
+</td><td class="centro" valign="bottom"><b>{{ etiqueta }}</b></td></tr></table>
 {%- endmacro %}
 
-<table class="hoja"><tr><td class="recibo-col">{{ recibo('Original') }}</td><td class="separador">&nbsp;</td><td class="recibo-col">{{ recibo('Duplicado') }}</td></tr></table>
+<table class="hoja"><tr><td class="recibo-col">{{ recibo('Original') }}</td><td class="separador">&nbsp;</td><td class="recibo-col">{{ recibo('Duplicado', true) }}</td></tr></table>
 </body>
 </html>
